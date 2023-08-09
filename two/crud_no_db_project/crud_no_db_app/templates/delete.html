@@ -1,0 +1,20 @@
+{% extends 'home.html' %}
+
+{% block title %}Delete{% endblock %}
+
+{% block content %}
+<div id="liveAlertPlaceholder"></div>
+<strong class="my-2">Delete a Key</strong>
+<form method="post">
+    {% csrf_token %}
+    <div class="form-group my-2" >
+        <select class="form-control" name="key" required>
+            <option value="" selected disabled>Select a Key</option>
+            {% for key in data.keys %}
+            <option value="{{ key }}">{{ key }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="btn btn-danger my-2 " id="liveAlertBtn">Delete</button>
+</form>
+{% endblock %}
