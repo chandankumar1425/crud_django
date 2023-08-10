@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zesty Zomato Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+            color: #000000;
+            /* border: 2px solid red; */
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            /* border: 2px solid red; */
+
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border: 2px solid green;
+        }
+
+        .available {
+            color: green;
+            font-weight: bold;
+        }
+
+        .unavailable {
+            color: red;
+            font-weight: bold;
+        }
+
+        a {
+            color: #000000;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .actions {
+            margin-left: 10px;
+        }
+
+        .actions a {
+            margin-left: 10px;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background-color: #000000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    {% block content %}
+    <div>
+        <h1>Menu</h1>
+        <ul style="text-align: center; width: 50%;margin:auto;">
+            {% for dish_id, dish in menu.items %}
+            <div>
+                <li>
+                    {{ dish.name }} - ${{ dish.price }}
+                    {% if dish.available %}
+                    <span class="available">Available</span>
+                    {% else %}
+                    <span class="unavailable">Not Available</span>
+                    {% endif %}
+                    <a href="{% url 'remove_dish' dish_id %}">Remove</a>
+                    <a href="{% url 'update_availability' dish_id %}">Update Availability</a>
+
+                </li>
+            </div>
+            {% endfor %}
+        </ul>
+        <h1>Orders</h1>
+        <ul style="text-align: center; width: 50%;margin:auto;">
+            {% for order_id, order_data in orders.items %}
+            <li>
+                Order ID: {{ order_id }}
+                Customer: {{ order_data.order.customer_name }}
+                Dishes: {{ order_data.order.dishes|join:", " }}
+                Status: {{ order_data.status }} ---
+                <a href="{% url 'update_status' order_id %}">Mark as Done</a>
+            </li>
+            {% endfor %}
+            <a class="add-button" href="{% url 'take_order' %}">Take New Order</a>
+            <a class="add-button" href="{% url 'add_dish' %}">Add New Dish</a>
+    </div>
+    </ul>
+
+    </div>
+    {% endblock %}
+</body>
+
+</html>
