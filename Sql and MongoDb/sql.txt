@@ -68,3 +68,39 @@ WHERE id < 3 OR name LIKE '%s';
 ##15
 SELECT * FROM Customers
 WHERE phone_number IS NULL OR phone_number = '';
+
+
+##################Set2#############
+##16
+CREATE TABLE Restaurants (
+    id INT PRIMARY KEY,
+    name VARCHAR(25),
+    cuisine VARCHAR(25),
+    address VARCHAR(25),
+    phone_number VARCHAR(10)
+);
+
+##17
+INSERT INTO Restaurants (id, name, cuisine, address, phone_number)
+VALUES
+    (1, 'Restaurant A', 'Italian', '123 Main St', '111-111-1111'),
+    (2, 'Restaurant B', 'Mexican', '456 Elm St', '222-222-2222'),
+    (3, 'Restaurant C', 'Chinese', '789 Oak St', '333-333-3333'),
+    (4, 'Restaurant D', 'Indian', '987 Maple St', '444-444-4444'),
+    (5, 'Restaurant E', 'Japanese', '654 Pine St', '555-555-5555');
+
+
+##18
+SELECT * FROM Restaurants
+ORDER BY average_rating DESC;
+
+
+##19
+SELECT * FROM Restaurants
+WHERE delivery_available = 1 AND average_rating > 4;
+
+##20
+SELECT * FROM Restaurants
+WHERE cuisine_type IS NULL OR cuisine_type = '';
+
+
