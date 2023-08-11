@@ -1,0 +1,70 @@
+##1
+CREATE TABLE Customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(25),
+    email VARCHAR(25),
+    address VARCHAR(30),
+    phone_number VARCHAR(10)
+);
+
+##2
+INSERT INTO Customers (id, name, email, address, phone_number)
+VALUES
+    (1, 'Alice', 'alice@example.com', '123 Apple St', '111-111-1111'),
+    (2, 'Bob', 'bob@example.com', '456 Banana St', '222-222-2222'),
+    (3, 'Charlie', 'charlie@example.com', '789 Cherry St', '333-333-3333'),
+    (4, 'David', 'david@example.com', '987 Grape St', '444-444-4444'),
+    (5, 'Eve', 'eve@example.com', '654 Orange St', '555-555-5555');
+
+##3
+SELECT * FROM Customers;
+
+
+##4
+SELECT name, email FROM Customers;
+
+
+##5
+SELECT * FROM Customers WHERE id = 3;
+
+
+##6
+SELECT * FROM Customers WHERE name LIKE 'A%';
+
+##7
+SELECT * FROM Customers ORDER BY name DESC;
+
+##8
+UPDATE Customers
+SET address = 'New Address'
+WHERE id = 4;
+
+
+##9
+SELECT * FROM Customers
+ORDER BY id ASC
+LIMIT 3;
+
+
+##10
+DELETE FROM Customers WHERE id = 2;
+
+##11
+SELECT COUNT(*) FROM Customers;
+
+##12
+SELECT * FROM Customers
+ORDER BY id ASC
+OFFSET 2;
+
+##13
+SELECT * FROM Customers
+WHERE id > 2 AND name LIKE 'B%';
+
+##14
+SELECT * FROM Customers
+WHERE id < 3 OR name LIKE '%s';
+
+##15
+SELECT * FROM Customers
+WHERE phone_number IS NULL OR phone_number = '';

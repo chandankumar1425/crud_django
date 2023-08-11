@@ -1,0 +1,105 @@
+##1
+db.createCollection("customers");
+db.customers.insertOne({
+    id: 1,
+    name: "John Doe",
+    email: "john@example.com",
+    address: "123 Main St",
+    phone_number: "123-456-7890"
+});
+
+##2
+// Insert five documents into the customers collection
+db.customers.insertMany([
+    {
+        id: 1,
+        name: "Alice",
+        email: "alice@example.com",
+        address: "123 Apple St",
+        phone_number: "111-111-1111"
+    },
+    {
+        id: 2,
+        name: "Bob",
+        email: "bob@example.com",
+        address: "456 Banana St",
+        phone_number: "222-222-2222"
+    },
+    {
+        id: 3,
+        name: "Charlie",
+        email: "charlie@example.com",
+        address: "789 Cherry St",
+        phone_number: "333-333-3333"
+    },
+    {
+        id: 4,
+        name: "David",
+        email: "david@example.com",
+        address: "987 Grape St",
+        phone_number: "444-444-4444"
+    },
+    {
+        id: 5,
+        name: "Eve",
+        email: "eve@example.com",
+        address: "654 Orange St",
+        phone_number: "555-555-5555"
+    }
+]);
+
+##3
+db.customers.find({});
+
+##4
+db.customers.find({}, { name: 1, email: 1, _id: 0 });
+
+##5
+db.customers.findOne({ id: 3 });
+
+##6
+db.customers.find({ name: /^A/ });
+
+##7
+db.customers.find().sort({ name: -1 });
+
+##8
+db.customers.updateOne({ id: 4 }, { $set: { address: 'New Address' } });
+
+##9
+db.customers.find().sort({ id: 1 }).limit(3);
+
+##10
+db.customers.deleteOne({ id: 2 });
+
+##11
+db.customers.countDocuments({});
+
+##12
+db.customers.find().sort({ id: 1 }).skip(2);
+
+##13
+db.customers.find({
+    $and: [
+        { id: { $gt: 2 } },
+        { name: /^B/ }
+    ]
+});
+
+##14
+db.customers.find({
+    $or: [
+        { id: { $lt: 3 } },
+        { name: /s$/ }
+    ]
+});
+
+##15
+db.customers.find({
+    $or: [
+        { phone_number: null },
+        { phone_number: { $exists: false } }
+    ]
+});
+
+
