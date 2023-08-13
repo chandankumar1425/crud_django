@@ -169,3 +169,242 @@ db.restaurants.find({
         { cuisine_type: { $exists: false } }
     ]
 });
+
+##21
+db.restaurants.countDocuments({ delivery_available: true });
+
+##22
+db.restaurants.find({ location: /New York/ });
+
+##23
+db.restaurants.aggregate([
+    {
+        $group: {
+            _id: null,
+            avg_rating: { $avg: "$average_rating" }
+        }
+    }
+]);
+
+##24    
+db.restaurants.find().sort({ average_rating: -1 }).limit(5);
+
+##25 
+db.restaurants.deleteOne({ id: 3 });
+
+########################set3################
+
+##26
+db.rides.insertOne({
+    id: 1,
+    driver: "John Doe",
+    passenger: "Alice Smith",
+    fare: 25.50,
+    start_time: ISODate("2023-08-11T10:00:00Z")
+});
+
+##27
+db.rides.insertMany([
+    {
+        id: 1,
+        driver: "John Doe",
+        passenger: "Alice Smith",
+        fare: 25.50,
+        start_time: ISODate("2023-08-11T10:00:00Z")
+    },
+    {
+        id: 2,
+        driver: "Jane Smith",
+        passenger: "Bob Johnson",
+        fare: 18.75,
+        start_time: ISODate("2023-08-11T11:30:00Z")
+    },
+    {
+        id: 3,
+        driver: "David Brown",
+        passenger: "Emily White",
+        fare: 30.00,
+        start_time: ISODate("2023-08-11T12:15:00Z")
+    },
+    {
+        id: 4,
+        driver: "Michael Green",
+        passenger: "Olivia Davis",
+        fare: 22.25,
+        start_time: ISODate("2023-08-11T13:45:00Z")
+    },
+    {
+        id: 5,
+        driver: "Sophia Wilson",
+        passenger: "Liam Harris",
+        fare: 19.50,
+        start_time: ISODate("2023-08-11T14:30:00Z")
+    }
+]);
+
+##28
+db.rides.find().sort({ fare: -1 });
+
+##29
+db.rides.aggregate([
+    {
+        $group: {
+            _id: null,
+            total_distance: { $sum: "$distance" },
+            total_fare: { $sum: "$fare" }
+        }
+    }
+]);
+
+##30
+db.rides.aggregate([
+    {
+        $group: {
+            _id: null,
+            avg_ride_time: { $avg: "$ride_time" }
+        }
+    }
+]);
+
+##31
+db.rides.find({
+    $or: [
+        { start_location: /Downtown/ },
+        { end_location: /Downtown/ }
+    ]
+});
+
+##32
+db.rides.countDocuments({ driver_id: your_driver_id });
+
+##33
+db.rides.updateOne({ id: 4 }, { $set: { fare: new_fare } });
+
+##34
+db.rides.aggregate([
+    {
+        $group: {
+            _id: "$driver_id",
+            total_fare: { $sum: "$fare" }
+        }
+    }
+]);
+
+##35
+db.rides.deleteOne({ id: 2 });
+
+################################set4
+
+##36
+ highest fare
+var maxFare = db.rides.find().sort({ fare: -1 }).limit(1)[0].fare;
+var highestFareRide = db.rides.find({ fare: maxFare });
+ lowest fare
+var minFare = db.rides.find().sort({ fare: 1 }).limit(1)[0].fare;
+var lowestFareRide = db.rides.find({ fare: minFare });
+
+##37
+db.rides.aggregate([
+    {
+        $group: {
+            _id: "$driver_id",
+            avg_fare: { $avg: "$fare" },
+            avg_distance: { $avg: "$distance" }
+        }
+    }
+]);
+
+##38
+db.rides.aggregate([
+    {
+        $group: {
+            _id: "$driver_id",
+            ride_count: { $sum: 1 }
+        }
+    },
+    {
+        $match: { ride_count: { $gt: 5 } }
+    }
+]);
+
+##39
+var maxFare = db.rides.find().sort({ fare: -1 }).limit(1)[0].fare;
+var highestFareDriverId = db.rides.find({ fare: maxFare })[0].driver_id;
+var driverWithHighestFare = db.drivers.findOne({ driver_id: highestFareDriverId }).name;
+
+##40
+db.rides.aggregate([
+    {
+        $group: {
+            _id: "$driver_id",
+            total_earnings: { $sum: "$fare" }
+        }
+    },
+    {
+        $sort: { total_earnings: -1 }
+    },
+    {
+        $limit: 3
+    }
+]);
+
+##41
+var sevenDaysAgo = new Date(new Date() - 7 * 24 * 60 * 60 * 1000);
+db.rides.find({ ride_date: { $gte: sevenDaysAgo } });
+
+##42
+db.rides.find({ end_location: null });
+
+
+##43
+db.rides.aggregate([
+    {
+        $addFields: {
+            fare_per_mile: { $divide: ["$fare", "$distance"] }
+        }
+    },
+    {
+        $sort: { fare_per_mile: -1 }
+    }
+]);
+
+
+##44
+db.rides.aggregate([
+    {
+        $lookup: {
+            from: "drivers",
+            localField: "driver_id",
+            foreignField: "driver_id",
+            as: "driver"
+        }
+    },
+    {
+        $unwind: "$driver"
+    },
+    {
+        $lookup: {
+            from: "passengers",
+            localField: "passenger_id",
+            foreignField: "passenger_id",
+            as: "passenger"
+        }
+    },
+    {
+        $unwind: "$passenger"
+    },
+    {
+        $project: {
+            _id: 0,
+            id: 1,
+            driver_name: "$driver.name",
+            passenger_name: "$passenger.name"
+        }
+    }
+]);
+
+
+##45
+db.rides.updateMany({}, { $set: { tip: null } });
+
+

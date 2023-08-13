@@ -103,4 +103,139 @@ WHERE delivery_available = 1 AND average_rating > 4;
 SELECT * FROM Restaurants
 WHERE cuisine_type IS NULL OR cuisine_type = '';
 
+##21
+SELECT COUNT(*) FROM Restaurants
+WHERE delivery_available = 1;
 
+##22
+SELECT * FROM Restaurants
+WHERE location LIKE '%New York%';
+
+##23
+SELECT AVG(average_rating) AS avg_rating FROM Restaurants;
+
+##24
+SELECT * FROM Restaurants
+ORDER BY average_rating DESC
+LIMIT 5;
+
+##25
+DELETE FROM Restaurants WHERE id = 3;
+
+
+########################set3################
+##26
+CREATE TABLE Rides (
+    id INT PRIMARY KEY,
+    driver VARCHAR(255),
+    passenger VARCHAR(255),
+    fare DECIMAL(10, 2),
+    start_time TIMESTAMP
+);
+
+##27
+INSERT INTO Rides (id, driver, passenger, fare, start_time)
+VALUES
+    (1, 'John Doe', 'Alice Smith', 25.50, '2023-08-11 10:00:00'),
+    (2, 'Jane Smith', 'Bob Johnson', 18.75, '2023-08-11 11:30:00'),
+    (3, 'David Brown', 'Emily White', 30.00, '2023-08-11 12:15:00'),
+    (4, 'Michael Green', 'Olivia Davis', 22.25, '2023-08-11 13:45:00'),
+    (5, 'Sophia Wilson', 'Liam Harris', 19.50, '2023-08-11 14:30:00');
+
+##28
+SELECT * FROM Rides
+ORDER BY fare DESC;
+
+
+##29
+SELECT SUM(distance) AS total_distance, SUM(fare) AS total_fare
+FROM Rides;
+
+##30
+SELECT AVG(ride_time) AS avg_ride_time FROM Rides;
+
+##31
+SELECT * FROM Rides
+WHERE start_location LIKE '%Downtown%' OR end_location LIKE '%Downtown%';
+
+##32
+SELECT * FROM Rides
+WHERE start_location LIKE '%Downtown%' OR end_location LIKE '%Downtown%';
+
+
+##33
+UPDATE Rides
+SET fare = new_fare
+WHERE id = 4;
+
+
+##34
+SELECT driver_id, SUM(fare) AS total_fare
+FROM Rides
+GROUP BY driver_id;
+
+
+##35
+DELETE FROM Rides
+WHERE id = 2;
+
+##set4
+
+##36
+SELECT *
+FROM Rides
+WHERE fare = (SELECT MAX(fare) FROM Rides)
+   OR fare = (SELECT MIN(fare) FROM Rides);
+
+##37
+SELECT driver_id, AVG(fare) AS avg_fare, AVG(distance) AS avg_distance
+FROM Rides
+GROUP BY driver_id;
+
+
+##38
+SELECT driver_id, COUNT(*) AS ride_count
+FROM Rides
+GROUP BY driver_id
+HAVING ride_count > 5;
+
+##39
+SELECT D.name
+FROM Rides R
+JOIN Drivers D ON R.driver_id = D.driver_id
+WHERE R.fare = (SELECT MAX(fare) FROM Rides);
+
+
+##40
+SELECT driver_id, SUM(fare) AS total_earnings
+FROM Rides
+GROUP BY driver_id
+ORDER BY total_earnings DESC
+LIMIT 3;
+
+##41
+SELECT *
+FROM Rides
+WHERE ride_date >= CURDATE() - INTERVAL 7 DAY;
+
+##42
+SELECT *
+FROM Rides
+WHERE end_location IS NULL;
+
+
+##43
+SELECT id, fare / distance AS fare_per_mile
+FROM Rides
+ORDER BY fare_per_mile DESC;
+
+##44
+SELECT R.*, D.name AS driver_name, P.name AS passenger_name
+FROM Rides R
+JOIN Drivers D ON R.driver_id = D.driver_id
+JOIN Passengers P ON R.passenger_id = P.passenger_id;
+
+
+##45
+ALTER TABLE Rides
+ADD COLUMN tip DECIMAL(10, 2);
