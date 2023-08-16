@@ -1,0 +1,16 @@
+<!-- weather_app/templates/weather_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Cities Weather</title>
+</head>
+<body>
+    <h1>All Cities Weather</h1>
+    <ul>
+        {% for city, data in weather_data.items %}
+            <li>{{ city }} - Temperature: {{ data.temperature }}, Weather: {{ data.weather }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
