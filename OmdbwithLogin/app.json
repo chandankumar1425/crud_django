@@ -1,0 +1,24 @@
+{
+  "expo": {
+    "scheme": "acme",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "name": "OmdbReactNative",
+    "slug": "OmdbReactNative",
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "1fe78754-fea5-40f4-8406-1299add3cc83"
+      }
+    },
+    "android": {
+      "package": "com.chandankunar1425.OmdbReactNative"
+    }
+  }
+}
